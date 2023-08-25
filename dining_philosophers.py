@@ -23,13 +23,11 @@ class Philosopher(threading.Thread):
         fork1, fork2 = self.fork_on_left, self.fork_on_right
 
         while self.running:
-            # Acquire the first fork
+            # Acquire the first fork with timeout
             fork1.acquire(True)
-            # Try to acquire the second fork (non-blocking)
             locked = fork2.acquire(False)
             if locked:
                 break
-            # Release the first fork if the second is not acquired
             fork1.release()
             print('{} swaps forks'.format(self.name))
             fork1, fork2 = fork2, fork1
@@ -61,7 +59,7 @@ def dining_philosophers():
         p.start()
     
     # Let the simulation run for a duration
-    time.sleep(100)
+    time.sleep(60)  # Adjust the time as needed
     Philosopher.running = False
     print("Now we're finishing.")
 
